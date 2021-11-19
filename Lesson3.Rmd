@@ -1,0 +1,57 @@
+---
+title: "Lesson 3"
+output: html_notebook
+---
+
+```{r}
+#Reading in data
+getwd() #get the directory where file could be stored
+list.files() #list files to get the correct file name
+pf <- read.csv('pseudo_facebook.tsv', sep = '\t') #read the data in R
+names(pf)
+```
+```{r}
+head(pf)
+```
+```{r}
+dim(pf)
+```
+```{r}
+summary(pf)
+```
+```{r}
+library(ggplot2)
+library(ggthemes)
+```
+```{r}
+#Histogram of Users Birthdays
+ggplot(aes(x = dob_day), data = pf) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31)
+```
+The histogram has so many people whose birthday is on 1st which is a little weird because it should be spread out. Few BDs on 31st is easily explained since there are a few months that end with 31st.
+```{r}
+#FACETING
+ggplot(data = pf, aes(x = dob_day)) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31) +
+  facet_wrap(~dob_month)
+```
+```{r}
+#Do Genders have differences in which days they are born on
+#Add a y in the aes to ..density.. to compare the 2
+ggplot(data = pf, aes(x = dob_day, y = ..density..)) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31) +
+  facet_wrap(~gender)
+```
+```{r}
+#Use facet_grid to look at both gender and month at the same time
+ggplot(data = pf, aes(x = dob_day, y = ..density..)) +
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks = 1:31) +
+  facet_grid(dob_month~gender)
+```
+
+
+
